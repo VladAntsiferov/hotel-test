@@ -13,5 +13,5 @@ public interface HotelService {
   HotelShortDto createHotel(Hotel hotel);
   void addAmenities(Long id, List<String> amenities);
   List<HistogramEntry> getHistogram(String param);
-  List<HotelShortDto> search(String name, String brand, String city, String country, String amenity)
+  List<HotelShortDto> search(String name, String brand, String city, String country, String amenity);
 }

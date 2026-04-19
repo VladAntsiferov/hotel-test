@@ -19,7 +19,6 @@ public class HistogramHelper {
         return;
       }
     }
-    // Если не нашли — добавляем новую запись со счетчиком 1
     list.add(new HistogramEntry(value, 1L));
   }
 
