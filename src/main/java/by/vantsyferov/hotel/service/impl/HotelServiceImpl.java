@@ -20,6 +20,7 @@ import java.util.Optional;
 @Service
 public class HotelServiceImpl implements HotelService {
 
+
   private final HotelRepository hotelRepository;
   private final HotelMapper hotelMapper;
   private final HistogramHelper histogramHelper;
