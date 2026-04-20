@@ -10,6 +10,8 @@ import by.vantsyferov.hotel.repository.HotelSpecifications;
 import by.vantsyferov.hotel.service.HotelService;
 import by.vantsyferov.hotel.utility.HistogramHelper;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 @Service
 public class HotelServiceImpl implements HotelService {
+  static Logger logger = LogManager.getLogger();
 
 
   private final HotelRepository hotelRepository;
@@ -33,6 +36,7 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   public List<HotelShortDto> findAllShort() {
+    logger.info("HotelService findAllShort() called");
     List<Hotel> allHotels = hotelRepository.findAll();
     List<HotelShortDto> result = new ArrayList<>();
 
@@ -44,17 +48,19 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   public Hotel findById(Long id) throws HotelNotFoundException {
-
+    logger.info("HotelService findById(Long id) called");
     Optional<Hotel> optionalHotel = hotelRepository.findById(id);
     if (optionalHotel.isPresent()) {
       return optionalHotel.get();
     } else {
+      logger.info("Hotel with ID {} not found", id);
       throw new HotelNotFoundException("Hotel with id" + id + "not found");
     }
   }
 
   @Override
   public HotelShortDto createHotel(Hotel hotel) {
+    logger.info("HotelService createHotel(Hotel hotel) called");
     Hotel saved = hotelRepository.save(hotel);
     return hotelMapper.toShortDto(saved);
   }
@@ -62,6 +68,7 @@ public class HotelServiceImpl implements HotelService {
   @Override
   @Transactional
   public void addAmenities(Long id, List<String> amenities) {
+    logger.info("HotelService addAmenities(Long id, List<String> amenities) called");
     Hotel hotel = findById(id);
     hotel.getAmenities().addAll(amenities);
     hotelRepository.save(hotel);
@@ -69,6 +76,7 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   public List<HistogramEntry> getHistogram(String param) {
+    logger.info("HotelService getHistogram(String param) called");
     List<Hotel> allHotels = hotelRepository.findAll();
     List<HistogramEntry> result = new ArrayList<>();
 
@@ -86,6 +94,7 @@ public class HotelServiceImpl implements HotelService {
   }
   @Override
   public List<HotelShortDto> search(String name, String brand, String city, String country, String amenity) {
+    logger.info("HotelService search called");
     Specification<Hotel> spec = Specification.where(HotelSpecifications.hasName(name))
             .and(HotelSpecifications.hasBrand(brand))
             .and(HotelSpecifications.hasCity(city))
